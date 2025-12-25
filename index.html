@@ -3,140 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Date Destiny Game Board - Perfect Match</title>
-    <style>
-        :root {
-            --bg-color: #4a4a4a;
-            --border-color: #ffffff;
-            --text-color: #ffffff;
-            --accent-color: #00d2ff;
-        }
-
-        body {
-            background-color: #222;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-            color: var(--text-color);
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* --- Upload Panel --- */
-        .upload-panel {
-            background: rgba(30, 30, 30, 0.9);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            border: 1px solid #444;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            display: flex;
-            gap: 40px; 
-            justify-content: flex-start; 
-            align-items: flex-start;
-            width: auto; 
-            max-width: 900px; 
-            align-self: flex-start; 
-            margin-left: 20px;
-        }
-
-        .upload-group { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .upload-group strong { font-size: 13px; text-transform: uppercase; color: #cccccc; }
-        input[type="file"] { display: none; }
-
-        .custom-file-upload {
-            display: inline-block;
-            padding: 10px 20px;
-            cursor: pointer;
-            background: linear-gradient(135deg, #333 0%, #222 100%);
-            border: 1px solid #555;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            color: #ffffff;
-            min-width: 140px; 
-            text-align: center;
-        }
-
-        .main-container { display: flex; gap: 20px; align-items: flex-start; }
-
-        .board {
-            width: 1000px;
-            height: 500px;
-            background-color: var(--bg-color);
-            position: relative;
-            box-sizing: border-box;
-            border: 4px solid #333;
-            margin-top: 80px; 
-        }
-
-        .dice-area {
-            position: absolute;
-            top: -75px; 
-            right: 0px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(30, 30, 30, 0.9);
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: 1px solid #555;
-            z-index: 100;
-        }
-
-        #costVal { background: transparent; border: 1px dashed #ffcc00; color: #ffcc00; width: 50px; font-size: 22px; text-align: center; }
-
-        .dice-d10 {
-            width: 45px; height: 45px; background: #fff; color: #222;
-            display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: bold;
-            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-        }
-
-        .zone { 
-            border: 2px solid var(--border-color); 
-            border-radius: 20px; 
-            position: absolute; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .hp-zone { width: 170px; height: 275px; left: 20px; top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 10px; box-sizing: border-box; }
-        .attack-zone { width: 600px; height: 175px; left: 210px; top: 20px; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: flex-start; justify-content: flex-start; overflow: visible; }
-        .protect-zone { width: 510px; height: 165px; left: 300px; top: 230px; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: flex-start; justify-content: flex-start; }
-        .action-box { width: 100px; height: 120px; right: 25px; top: 20px; font-size: 16px; flex-direction: column; align-items: flex-start; padding: 10px; border-radius: 15px; }
-        .deck-zone { width: 110px; height: 160px; right: 30px; top: 155px; background-color: rgba(0,0,0,0.2); cursor: pointer; }
-        .delect-zone { width: 110px; height: 150px; right: 30px; bottom: 20px; background-size: cover; background-position: center; background-repeat: no-repeat; font-size: 18px; }
-
-        .bottom-left-group { position: absolute; width: 270px; height: 170px; left: 15px; bottom: 15px; display: flex; justify-content: space-evenly; align-items: center; }
-        .sub-zone { position: static; width: 110px; height: 145px; font-size: 16px; border-radius: 18px; background-size: cover; background-position: center; border: 2px solid white; display: flex; gap: 2px; flex-wrap: wrap; padding: 2px; }
-
-        .card-container { display: flex; flex-direction: column; align-items: center; position: relative; }
-        .card-on-board { width: 80px; height: 110px; background-size: cover; background-position: center; border: 2px solid white; border-radius: 8px; cursor: grab; z-index: 2; }
-        .card-horizontal { transform: rotate(90deg); margin: 0 15px; }
-        .hp-card-item { width: 70px; height: 50px; background-image: url('blackcard.png'); background-size: cover; border: 1px solid white; border-radius: 5px; cursor: pointer; }
-        .card-in-hand { width: 100px; height: 140px; background-size: cover; border: 2px solid white; border-radius: 8px; cursor: grab; flex-shrink: 0; }
-        
-        .card-visual { width: 100%; height: 100%; background-image: url('blackcard.png'); background-size: cover; border-radius: 15px; display: none; position: relative; }
-        .counter { position: absolute; bottom: 8px; right: 8px; background: red; color: white; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; display: flex; justify-content: center; align-items: center; z-index: 10; }
-
-        .link-area { display: none; flex-direction: column; gap: -85px; margin-top: 5px; width: 70px; min-height: 30px; border: 1px dashed rgba(255,255,255,0.3); border-radius: 5px; }
-        .link-card { width: 70px; height: 35px; background-size: cover; background-position: center; border: 1px solid #aaa; border-radius: 4px; margin-bottom: -20px; }
-
-        .preview-container { width: 250px; height: 500px; background: #1a1a1a; border: 2px solid #555; border-radius: 10px; display: flex; flex-direction: column; align-items: center; padding: 10px; margin-top: 80px; }
-        #fullCardPreview { width: 100%; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: center; border: 1px solid #444; }
-        .hand-display { margin-top: 20px; display: flex; gap: 10px; min-height: 160px; border: 1px dashed #777; padding: 10px; width: 1000px; justify-content: center; border-radius: 10px; overflow-x: auto; }
-
-        #contextMenu { display: none; position: absolute; background: #333; border: 1px solid #555; z-index: 5000; border-radius: 4px; padding: 5px 0; box-shadow: 0 2px 10px #000; }
-        #contextMenu div { padding: 8px 20px; cursor: pointer; color: white; font-size: 14px; }
-        #contextMenu div:hover { background: var(--accent-color); color: black; }
-        #deckModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 6000; overflow-y: auto; padding: 40px; }
-        .modal-content { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .modal-card-item { display: flex; flex-direction: column; align-items: center; gap: 5px; background: #222; padding: 10px; border-radius: 10px; }
-        .modal-card-img { width: 120px; height: 168px; background-size: cover; border: 2px solid white; border-radius: 8px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -166,12 +33,12 @@
             <div class="dice-area">
                 <div class="cost-container">COST: <input type="number" id="costVal" value="0" min="0" max="10"></div>
                 <div id="diceResult" class="dice-d10">?</div>
-                <button class="custom-file-upload" style="min-width: 80px; padding: 5px;" onclick="rollD10()">ROLL</button>
+                <button class="roll-btn" onclick="rollD10()">ROLL</button>
             </div>
 
-            <div class="zone hp-zone drop-zone" id="hpContent" data-limit="8">HP Zone</div>
-            <div class="zone attack-zone drop-zone" id="attackZone" data-limit="5">Attack Zone</div>
-            <div class="zone protect-zone drop-zone" id="protectZone" data-limit="4">Protect Zone</div>
+            <div class="zone hp-zone drop-zone" id="hpContent" data-limit="8"></div>
+            <div class="zone attack-zone drop-zone" id="attackZone" data-limit="5">Attack Zone (5)</div>
+            <div class="zone protect-zone drop-zone" id="protectZone" data-limit="4">Protect Zone (4)</div>
             
             <div class="zone action-box">
                 <div style="font-size: 14px; text-align: left; width: 100%;">
@@ -186,7 +53,9 @@
                 <div class="card-visual" id="cardImg"><div class="counter" id="deckCount">0</div></div>
             </div>
 
-            <div class="zone delect-zone drop-zone" id="delectZone"><span id="delectLabel">Delect<br>Zone</span></div>
+            <div class="zone delect-zone drop-zone" id="delectZone">
+                <span id="delectLabel">Delect<br>Zone</span>
+            </div>
 
             <div class="bottom-left-group">
                 <div class="zone sub-zone" id="opZone">Operator</div>
@@ -195,8 +64,9 @@
         </div>
 
         <div class="preview-container">
-            <h3 style="margin-top:0; color: yellow;">Card Preview</h3>
+            <h3 style="margin-top:0; color: yellow; font-size: 18px;">Card Preview</h3>
             <div id="fullCardPreview"></div>
+            <p style="font-size: 12px; color: #888; text-align: center; margin-top: 10px;">Click card to see info</p>
         </div>
     </div>
 
@@ -209,240 +79,22 @@
             <div onclick="openViewer()">ดูการ์ดทั้งหมด</div>
         </div>
         <div id="fieldOptions" style="display:none">
-            <div onclick="toggleRotate()">เปลี่ยนรูปแบบ (ตั้ง/นอน)</div>
-            <div onclick="toggleLinkArea()">Link (เปิด/ปิด ช่อง)</div>
+            <div onclick="toggleRotate()">สลับตั้ง/นอน</div>
+            <div onclick="toggleLinkArea()">Link (วางใต้การ์ด)</div>
             <div onclick="returnToHand()">นำกลับขึ้นมือ</div>
         </div>
     </div>
 
     <div id="deckModal"><span class="close-modal" onclick="closeViewer()">&times;</span><div class="modal-content" id="modalGrid"></div></div>
 
-    <script>
-        const fileIn = document.getElementById('fileIn');
-        const cardImg = document.getElementById('cardImg');
-        const deckCountDisplay = document.getElementById('deckCount');
-        const hpContent = document.getElementById('hpContent');
-        const handDisplay = document.getElementById('handDisplay');
-        const previewImg = document.getElementById('fullCardPreview');
-        const deckNode = document.getElementById('deckNode');
-        const delectZone = document.getElementById('delectZone');
-        const contextMenu = document.getElementById('contextMenu');
-        const modalGrid = document.getElementById('modalGrid');
-        const deckModal = document.getElementById('deckModal');
-        
-        let deck = [];
-        let delectDeck = [];
-        let dragSrcEl = null;
-        let selectedFieldCard = null;
-        let currentMenuSource = '';
+    <div id="fullImageOverlay" onclick="this.style.display='none'">
+        <img id="fullImageDisplay" src="" alt="Full Card">
+    </div>
 
-        function rollD10() {
-            const diceEl = document.getElementById('diceResult');
-            let count = 0;
-            let itv = setInterval(() => {
-                diceEl.innerText = Math.floor(Math.random() * 10);
-                if(count++ > 10) {
-                    clearInterval(itv);
-                    const res = Math.floor(Math.random() * 10);
-                    diceEl.innerText = res;
-                    const costIn = document.getElementById('costVal');
-                    costIn.value = Math.min(10, parseInt(costIn.value) + res);
-                }
-            }, 50);
-        }
+    <div id="fullImageOverlay" onclick="this.style.display='none'">
+        <img id="fullImageDisplay" src="" alt="Full Card">
+    </div>
 
-        function handleDragStart(e) { dragSrcEl = this; e.dataTransfer.setData('text/plain', this.style.backgroundImage); }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            this.classList.remove('drag-over');
-            const bgImage = e.dataTransfer.getData('text/plain');
-            if(!bgImage) return;
-
-            if(this.id === 'delectZone') {
-                const url = bgImage.replace(/url\(["']?(.*?)["']?\)/, '$1');
-                delectDeck.push(url);
-                this.style.backgroundImage = bgImage;
-                document.getElementById('delectLabel').style.display = 'none';
-                if(dragSrcEl) dragSrcEl.remove();
-                return;
-            }
-
-            if(this.id === 'hpContent') {
-                if(this.children.length >= 8) { alert("HP Zone เต็มแล้ว!"); return; }
-                addCardToHp(bgImage.replace(/url\(["']?(.*?)["']?\)/, '$1'));
-                if(dragSrcEl) dragSrcEl.remove();
-                return;
-            }
-
-            if(this.id === 'deckNode') {
-                deck.push(bgImage.replace(/url\(["']?(.*?)["']?\)/, '$1'));
-                updateDeckDisplay();
-                if(dragSrcEl) dragSrcEl.remove();
-                return;
-            }
-
-            const limit = parseInt(this.getAttribute('data-limit'));
-            if(limit && this.children.length >= limit) { alert("โซนนี้เต็มแล้ว!"); return; }
-
-            addCardToZone(this, bgImage);
-            if(dragSrcEl) dragSrcEl.remove();
-        }
-
-        function addCardToZone(zone, bgImage) {
-            const container = document.createElement('div');
-            container.className = 'card-container';
-            const card = document.createElement('div');
-            card.className = zone.id === 'handDisplay' ? 'card-in-hand' : 'card-on-board';
-            if(zone.id === 'ptZone') { card.style.width = '50px'; card.style.height = '70px'; }
-            card.style.backgroundImage = bgImage;
-            card.draggable = true;
-            card.onclick = () => previewImg.style.backgroundImage = bgImage;
-            
-            card.oncontextmenu = (ev) => {
-                ev.preventDefault();
-                selectedFieldCard = card;
-                document.getElementById('deckOptions').style.display = 'none';
-                document.getElementById('fieldOptions').style.display = 'block';
-                contextMenu.style.display = 'block';
-                contextMenu.style.left = ev.pageX + 'px';
-                contextMenu.style.top = ev.pageY + 'px';
-            };
-
-            const linkArea = document.createElement('div');
-            linkArea.className = 'link-area drop-zone';
-            linkArea.ondragover = (ev) => ev.preventDefault();
-            linkArea.ondrop = function(ev) {
-                ev.preventDefault();
-                ev.stopPropagation();
-                if(this.children.length >= 2) { alert("Link ได้สูงสุด 2 ใบ"); return; }
-                const linkImg = ev.dataTransfer.getData('text/plain');
-                const lc = document.createElement('div');
-                lc.className = 'link-card';
-                lc.style.backgroundImage = linkImg;
-                this.appendChild(lc);
-                if(dragSrcEl) dragSrcEl.remove();
-            };
-
-            container.appendChild(card);
-            container.appendChild(linkArea);
-            zone.appendChild(container);
-            addDragEvents(card);
-        }
-
-        function toggleRotate() { if(selectedFieldCard) selectedFieldCard.classList.toggle('card-horizontal'); contextMenu.style.display = 'none'; }
-        function toggleLinkArea() { if(selectedFieldCard) { const area = selectedFieldCard.nextSibling; area.style.display = area.style.display === 'flex' ? 'none' : 'flex'; } contextMenu.style.display = 'none'; }
-        function returnToHand() { if(selectedFieldCard) { createHandCardFromUrl(selectedFieldCard.style.backgroundImage.replace(/url\(["']?(.*?)["']?\)/, '$1')); selectedFieldCard.parentElement.remove(); } contextMenu.style.display = 'none'; }
-        
-        window.onclick = () => { contextMenu.style.display = 'none'; };
-
-        function addDragEvents(el) { el.addEventListener('dragstart', handleDragStart); }
-        document.querySelectorAll('.drop-zone').forEach(z => {
-            z.ondragover = (e) => e.preventDefault();
-            z.ondragenter = function() { this.classList.add('drag-over'); };
-            z.ondragleave = function() { this.classList.remove('drag-over'); };
-            z.addEventListener('drop', handleDrop);
-        });
-
-        function createHandCardFromUrl(url) {
-            const card = document.createElement('div');
-            card.className = 'card-in-hand';
-            card.style.backgroundImage = `url(${url})`;
-            card.draggable = true;
-            card.onclick = () => previewImg.style.backgroundImage = `url(${url})`;
-            addDragEvents(card);
-            handDisplay.appendChild(card);
-        }
-
-        function addCardToHp(url) {
-            const hp = document.createElement('div');
-            hp.className = 'hp-card-item';
-            hp.dataset.url = url;
-            hp.onclick = function() { createHandCardFromUrl(this.dataset.url); this.remove(); };
-            hpContent.appendChild(hp);
-        }
-
-        function updateDeckDisplay() { 
-            deckCountDisplay.innerText = deck.length; 
-            if(deck.length > 0) {
-                cardImg.style.display = "block";
-                document.getElementById('deckLabel').style.display = 'none';
-            } else {
-                cardImg.style.display = "none";
-                document.getElementById('deckLabel').style.display = 'block';
-            }
-        }
-        
-        function drawCard() { if(deck.length > 0) { createHandCardFromUrl(deck.shift()); updateDeckDisplay(); } }
-        function shuffleDeck() { deck.sort(() => Math.random() - 0.5); alert("สับเด็คเรียบร้อย!"); contextMenu.style.display = 'none'; }
-
-        fileIn.addEventListener('change', function() {
-            if(this.files.length === 50) {
-                deck = Array.from(this.files).map(f => URL.createObjectURL(f));
-                deck.sort(() => Math.random() - 0.5);
-                hpContent.innerHTML = '';
-                for(let i=0; i<8; i++) addCardToHp(deck.shift());
-                handDisplay.innerHTML = '';
-                for(let i=0; i<5; i++) drawCard();
-                updateDeckDisplay();
-            }
-        });
-
-        deckNode.oncontextmenu = (e) => { 
-            e.preventDefault(); 
-            currentMenuSource = 'deck'; 
-            document.getElementById('fieldOptions').style.display = 'none';
-            document.getElementById('deckOptions').style.display = 'block';
-            contextMenu.style.display = 'block';
-            contextMenu.style.left = e.pageX + 'px';
-            contextMenu.style.top = e.pageY + 'px';
-        };
-
-        function openViewer() {
-            modalGrid.innerHTML = '';
-            const list = currentMenuSource === 'deck' ? deck : delectDeck;
-            list.forEach((url, i) => {
-                const div = document.createElement('div');
-                div.className = 'modal-card-item';
-                div.innerHTML = `<div class="modal-card-img" style="background-image:url(${url})"></div>
-                    <div style="display:flex; flex-direction:column; gap:2px;">
-                        <button class="custom-file-upload" style="min-width: 100px; padding: 5px; font-size: 10px;" onclick="pick(${i},'hand')">มือ</button>
-                        <button class="custom-file-upload" style="min-width: 100px; padding: 5px; font-size: 10px;" onclick="pick(${i},'attack')">Attack</button>
-                        <button class="custom-file-upload" style="min-width: 100px; padding: 5px; font-size: 10px;" onclick="pick(${i},'protect')">Protect</button>
-                    </div>`;
-                modalGrid.appendChild(div);
-            });
-            deckModal.style.display = 'block';
-        }
-
-        window.pick = (i, target) => {
-            const list = currentMenuSource === 'deck' ? deck : delectDeck;
-            const url = list.splice(i, 1)[0];
-            const bg = `url(${url})`;
-            if(target === 'hand') createHandCardFromUrl(url);
-            if(target === 'attack') addCardToZone(document.getElementById('attackZone'), bg);
-            if(target === 'protect') addCardToZone(document.getElementById('protectZone'), bg);
-            updateDeckDisplay();
-            deckModal.style.display = 'none';
-        };
-
-        window.closeViewer = () => deckModal.style.display = 'none';
-
-        document.getElementById('opIn').onchange = function() {
-            const zone = document.getElementById('opZone');
-            zone.style.backgroundImage = `url(${URL.createObjectURL(this.files[0])})`;
-            zone.innerText = '';
-        };
-
-        document.getElementById('ptIn').onchange = function() {
-            const ptZone = document.getElementById('ptZone');
-            ptZone.innerHTML = '';
-            Array.from(this.files).slice(0,4).forEach(f => {
-                const url = URL.createObjectURL(f);
-                addCardToZone(ptZone, `url(${url})`);
-            });
-            ptZone.querySelector('span')?.remove();
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
