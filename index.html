@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="upload-panel">
         <div class="upload-group">
             <strong>Deck (50 Cards)</strong>
@@ -28,10 +27,23 @@
         </div>
     </div>
 
+<div class="totem-box">
+    <div class="totem-group">
+        <strong>Tokens</strong>
+        <div class="totem-items">
+            <div class="totem-item stat-blue" draggable="true" ondragstart="handleTotemDrag(event, 'blue')">+1</div>
+            <div class="totem-item stat-red" draggable="true" ondragstart="handleTotemDrag(event, 'red')">-1</div>
+            <div class="totem-item shield-token" draggable="true" ondragstart="handleTotemDrag(event, 'shield')">🛡️</div>
+        </div>
+    </div>
+    <p style="font-size: 10px; color: #888; margin-top: 5px;">Drag to attach on cards</p>
+</div>
+
+
     <div class="main-container">
         <div class="board">
             <div class="dice-area">
-                <div class="cost-container">COST: <input type="number" id="costVal" value="0" min="0" max="10"></div>
+                <div class="cost-container">COST: <input type="number" id="costVal" value="0" min="0" max="99" class="no-spinner"></div>
                 <div id="diceResult" class="dice-d10">?</div>
                 <button class="roll-btn" onclick="rollD10()">ROLL</button>
             </div>
@@ -49,17 +61,17 @@
             </div>
 
             <div class="zone deck-zone drop-zone" id="deckNode" onclick="drawCard()">
-                <span id="deckLabel">Deck<br>Zone</span>
+                <span id="deckLabel">Deck Zone</span>
                 <div class="card-visual" id="cardImg"><div class="counter" id="deckCount">0</div></div>
             </div>
 
             <div class="zone delect-zone drop-zone" id="delectZone">
-                <span id="delectLabel">Delect<br>Zone</span>
+                <span id="delectLabel">Delect Zone</span>
             </div>
 
             <div class="bottom-left-group">
-                <div class="zone sub-zone" id="opZone">Operator</div>
-                <div class="zone sub-zone drop-zone" id="ptZone" data-limit="4">Partners</div>
+                <div class="zone sub-zone drop-zone" id="opZone">Operator</div>
+                <div class="zone sub-zone drop-zone" id="ptZone" data-limit="10">Partners</div>
             </div>
         </div>
 
@@ -88,12 +100,8 @@
     <div id="deckModal"><span class="close-modal" onclick="closeViewer()">&times;</span><div class="modal-content" id="modalGrid"></div></div>
 
     <div id="fullImageOverlay" onclick="this.style.display='none'">
-        <img id="fullImageDisplay" src="" alt="Full Card">
-    </div>
-
-    <div id="fullImageOverlay" onclick="this.style.display='none'">
-        <img id="fullImageDisplay" src="" alt="Full Card">
-    </div>
+    <img id="fullImageDisplay" src="" alt="Full Card">
+</div>
 
     <script src="script.js"></script>
 </body>

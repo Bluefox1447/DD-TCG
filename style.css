@@ -7,17 +7,79 @@
 
 body {
     background-color: #222;
+    display: flex; flex-direction: column; align-items: center;
+    margin: 0; padding: 20px; color: var(--text-color); font-family: 'Arial', sans-serif;
+}
+/* หน้าต่างหลักบังคับแสดง 5 ใบต่อแถว */
+.modal-content {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* บังคับให้มี 5 คอลัมน์ */
+    gap: 20px;
+    justify-items: center;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* กล่องเก็บการ์ดแต่ละใบในหน้า Viewer */
+.modal-card-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0; padding: 20px;
-    color: var(--text-color);
-    font-family: 'Arial', sans-serif;
+    background: rgba(35, 35, 35, 0.95);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #555;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    width: 160px;
 }
 
+/* ขนาดรูปการ์ดในหน้า Viewer */
+.modal-card-img {
+    width: 140px;
+    height: 196px;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* จัดกลุ่มปุ่มกดให้เป็น 2 แถว แถวละ 2 ปุ่ม */
+.modal-btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    width: 100%;
+}
+
+.modal-btn-group button {
+    font-size: 11px;
+    padding: 6px 0;
+    min-width: 0;
+    text-align: center;
+    background: #444;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-btn-group button:hover {
+    background: var(--accent-color);
+    color: black;
+}
+
+/* เอาปุ่มลูกศรขึ้นลงออกจาก input number */
+.no-spinner::-webkit-inner-spin-button, 
+.no-spinner::-webkit-outer-spin-button { 
+    -webkit-appearance: none; margin: 0; 
+}
+.no-spinner { -moz-appearance: textfield; }
+
 .upload-panel {
-    background: rgba(30, 30, 30, 0.9);
-    padding: 20px; border-radius: 12px; margin-bottom: 25px;
+    background: rgba(30, 30, 30, 0.9); padding: 20px; border-radius: 12px; margin-bottom: 25px;
     border: 1px solid #444; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     display: flex; gap: 40px; justify-content: flex-start; align-self: flex-start; margin-left: 20px;
 }
@@ -35,114 +97,228 @@ input[type="file"] { display: none; }
 .main-container { display: flex; gap: 0; align-items: flex-start; justify-content: center; }
 
 .board {
-    width: 1000px; height: 500px;
-    background-color: var(--bg-color);
+    width: 1000px; height: 500px; background-color: var(--bg-color);
     position: relative; border: 4px solid #333; margin-top: 80px; 
 }
 
 .dice-area {
-    position: absolute; top: -75px; right: 0px;
-    display: flex; align-items: center; gap: 15px;
-    background: rgba(30, 30, 30, 0.9); padding: 10px 20px;
-    border-radius: 10px; border: 1px solid #555; z-index: 100;
+    position: absolute; top: -75px; right: 0px; display: flex; align-items: center; gap: 15px;
+    background: rgba(30, 30, 30, 0.9); padding: 10px 20px; border-radius: 10px; border: 1px solid #555; z-index: 100;
 }
 
-#costVal { background: transparent; border: 1px dashed #ffcc00; color: #ffcc00; width: 50px; font-size: 22px; text-align: center; }
+#costVal { 
+    background: #000; border: 1px solid #ffcc00; color: #ffcc00; 
+    width: 60px; font-size: 22px; text-align: center; border-radius: 5px;
+}
 
 .dice-d10 {
-    width: 45px; height: 45px; background: #fff; color: #222;
-    display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: bold;
+    width: 45px; height: 45px; background: #fff; color: #000;
+    display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold;
     clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
 }
 
 .zone { 
-    border: 2px solid var(--border-color); border-radius: 20px; 
-    position: absolute; display: flex; justify-content: center; 
-    align-items: center; text-align: center; overflow: hidden;
+    border: 2px solid var(--border-color); border-radius: 20px; position: absolute;
+    display: flex; justify-content: center; align-items: center; text-align: center; overflow: hidden;
 }
 
-/* หน้าต่างแสดงรูปเต็มเมื่อคลิก */
-#fullImageOverlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 10000;
+/* คอนเทนเนอร์สำหรับเก็บไอเทมติดการ์ดที่มุมขวาบน */
+.card-stats-overlay {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    z-index: 30;
+}
+
+/* วงกลมแต้มตัวเลข (+1, -1) ที่สามารถพิมพ์ได้ */
+.stat-circle {
+    width: 26px;
+    height: 26px;
+    background: #00d2ff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
-    cursor: zoom-out;
+    font-size: 11px;
+    font-weight: bold;
+    border: 1.5px solid white;
+    cursor: text;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-#fullImageDisplay {
-    max-width: 90%;
-    max-height: 90%;
-    border: 3px solid white;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0, 210, 255, 0.5);
+/* รูปโล่ป้องกันที่สามารถลากวางได้ */
+.shield-icon {
+    width: 26px;
+    height: 26px;
+    background: #ffcc00;
+    color: #222;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    border: 1px solid white;
+    cursor: grab;
 }
+
+/* กล่องเก็บโทเค็นด้านซ้ายของจอ */
+.totem-box {
+    position: fixed;
+    left: 20px;
+    bottom: 200px;
+    background: rgba(30, 30, 30, 0.9);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #555;
+    z-index: 1000;
+}
+
+.totem-items { display: flex; gap: 10px; margin-top: 10px; }
+
+/* สไตล์โทเค็นพื้นฐาน */
+.totem-item {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 12px; font-weight: bold; color: white;
+    cursor: grab; border: 1.5px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.stat-blue { background: #00d2ff; } /* สีฟ้า +1 */
+.stat-red { background: #ff4b2b; }  /* สีแดง -1 */
+.shield-token { background: #ffcc00; font-size: 16px; border-radius: 8px; } /* โล่สีเหลือง */
+
+/* คอนเทนเนอร์สำหรับโทเค็นที่ติดบนการ์ด */
+.card-totem-overlay {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    width: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* โทเค็นที่วางแล้วให้เล็กลงและพิมพ์ได้ */
+.attached-totem {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 10px; pointer-events: auto;
+    cursor: text; border: 1px solid white;
+}
+
 
 .hp-zone { width: 170px; height: 275px; left: 20px; top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 10px; box-sizing: border-box; }
+.hp-card-item { width: 70px; height: 50px; background-image: url('blackcard.png'); background-size: cover; border: 1px solid white; border-radius: 5px; cursor: pointer; }
+
 .attack-zone { width: 600px; height: 175px; left: 210px; top: 20px; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: flex-start; justify-content: flex-start; overflow: visible; }
 .protect-zone { width: 510px; height: 165px; left: 300px; top: 230px; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: flex-start; justify-content: flex-start; }
 .action-box { width: 100px; height: 100px; right: 25px; top: 20px; font-size: 16px; flex-direction: column; align-items: flex-start; padding: 10px; border-radius: 15px; }
 
-/* Deck & Delect: แสดงเพียงใบเดียว */
-.deck-zone { width: 110px; height: 160px; right: 30px; top: 155px; background-color: rgba(0,0,0,0.2); }
-.delect-zone { width: 110px; height: 150px; right: 30px; bottom: 20px; background-size: cover; background-position: center; background-repeat: no-repeat; }
+.deck-zone, .delect-zone { width: 110px; height: 160px; right: 30px; background-color: rgba(0,0,0,0.2); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.deck-zone { top: 155px; cursor: pointer; }
+.delect-zone { bottom: 20px; height: 150px; }
 
 .bottom-left-group { position: absolute; width: 270px; height: 170px; left: 15px; bottom: 15px; display: flex; justify-content: space-evenly; align-items: center; }
-.sub-zone { position: static; width: 110px; height: 145px; border-radius: 18px; border: 2px solid white; display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; align-items: center; background-size: cover; background-position: center; cursor: pointer; }
+.sub-zone { position: static; width: 110px; height: 145px; border-radius: 18px; border: 2px solid white; display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; align-items: center; background-size: cover; background-position: center; cursor: pointer; overflow: visible !important; }
 
-/* Preview Container ชิดขวาสนาม */
 .preview-container {
-    width: 250px; height: 500px; background: #1a1a1a;
-    border: 2px solid #555; border-left: none; border-radius: 0 10px 10px 0;
-    display: flex; flex-direction: column; align-items: center; padding: 10px; margin-top: 80px;
+    width: 250px; height: 500px; background: #1a1a1a; border: 2px solid #555; border-left: none;
+    border-radius: 0 10px 10px 0; display: flex; flex-direction: column; align-items: center; padding: 10px; margin-top: 80px;
 }
-#fullCardPreview { width: 100%; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: center; border: 1px solid #444; margin-top: 10px; }
+#fullCardPreview { width: 100%; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: center; border: 1px solid #444; margin-top: 10px; cursor: pointer;}
 
 .card-container { display: flex; flex-direction: column; align-items: center; position: relative; }
-.card-on-board { width: 80px; height: 110px; background-size: cover; background-position: center; border: 2px solid white; border-radius: 8px; cursor: grab; z-index: 2; }
+.card-on-board { width: 80px; height: 110px; background-size: cover; background-position: center; border: 2px solid white; border-radius: 8px; cursor: grab; z-index: 2; position: relative;}
 .card-horizontal { transform: rotate(90deg); margin: 0 15px; }
-.hp-card-item { width: 70px; height: 50px; background-image: url('blackcard.png'); background-size: cover; border: 1px solid white; border-radius: 5px; cursor: pointer; }
 .card-in-hand { width: 100px; height: 140px; background-size: cover; border: 2px solid white; border-radius: 8px; cursor: grab; flex-shrink: 0; }
-
 .card-visual { width: 100%; height: 100%; background-image: url('blackcard.png'); background-size: cover; border-radius: 15px; display: none; position: relative; }
 .counter { position: absolute; bottom: 8px; right: 8px; background: red; color: white; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; display: flex; justify-content: center; align-items: center; z-index: 10; }
 
-.link-area { display: none; flex-direction: column; gap: -85px; margin-top: 5px; width: 70px; min-height: 30px; border: 1px dashed rgba(255,255,255,0.3); border-radius: 5px; }
-.link-card { width: 70px; height: 35px; background-size: cover; background-position: center; border: 1px solid #aaa; border-radius: 4px; margin-bottom: -20px; }
+/* Link System: ซ้อนใต้การ์ด และนำออกได้ */
+.link-area { display: none; flex-direction: column; gap: -95px; margin-top: 5px; width: 70px; min-height: 20px; border: 1px dashed rgba(255,255,255,0.3); border-radius: 5px; }
+.link-card { 
+    width: 70px; height: 100px; background-size: cover; background-position: center; 
+    border: 1px solid #aaa; border-radius: 4px; margin-bottom: -90px;
+    cursor: pointer; transition: 0.2s;
+}
+.link-card:hover { border-color: red; transform: translateY(-5px); }
 
 .hand-display { margin-top: 20px; display: flex; gap: 10px; min-height: 160px; border: 1px dashed #777; padding: 10px; width: 1000px; justify-content: center; border-radius: 10px; overflow-x: auto; }
 
 #contextMenu { display: none; position: absolute; background: #333; border: 1px solid #555; z-index: 5000; border-radius: 4px; padding: 5px 0; box-shadow: 0 2px 10px #000; }
 #contextMenu div { padding: 8px 20px; cursor: pointer; color: white; font-size: 14px; }
 #contextMenu div:hover { background: var(--accent-color); color: black; }
-#deckModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 6000; overflow-y: auto; padding: 40px; }
-.modal-content { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-.modal-card-item { display: flex; flex-direction: column; align-items: center; gap: 5px; background: #222; padding: 10px; border-radius: 10px; }
-.modal-card-img { width: 120px; height: 168px; background-size: cover; border: 2px solid white; border-radius: 8px; }
-.close-modal { position: fixed; top: 10px; right: 20px; font-size: 30px; color: white; cursor: pointer; }
 
+/* --- แก้ไขหน้าต่าง Overlay แสดงรูปใหญ่ (Zoom/Drag) --- */
 #fullImageOverlay {
-    display: none;
+    display: none; /* ซ่อนไว้เริ่มต้น */
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.9);
-    z-index: 10000;
+    z-index: 20000; /* ต้องสูงกว่า modal อื่นๆ */
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* ป้องกันแถบ Scrollbar ขึ้นขณะซูม */
+    overflow: hidden;
     cursor: grab;
 }
 
+#fullImageOverlay:active {
+    cursor: grabbing;
+}
+
 #fullImageDisplay {
+    position: relative;
     max-width: 90%;
     max-height: 90%;
     border: 3px solid white;
     border-radius: 15px;
     box-shadow: 0 0 30px rgba(0, 210, 255, 0.5);
-    transition: transform 0.1s ease; /* ทำให้อินิเมชั่นซูมลื่นไหล */
+    transition: transform 0.1s ease-out; /* เพื่อให้การซูมลื่นไหล */
     transform-origin: center;
-    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* --- แก้ไขหน้าต่างดูการ์ดทั้งหมด (Modal) --- */
+#deckModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 15000; /* สูงกว่ากระดานปกติ */
+    overflow-y: auto;
+    padding: 40px;
+}
+
+.modal-content {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* แสดง 5 ใบต่อแถว */
+    gap: 20px;
+    justify-items: center;
+    padding-top: 20px;
+}
+
+.close-modal {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    z-index: 15001;
 }
