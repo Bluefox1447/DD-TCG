@@ -27,18 +27,17 @@
         </div>
     </div>
 
-<div class="totem-box">
-    <div class="totem-group">
-        <strong>Tokens</strong>
-        <div class="totem-items">
-            <div class="totem-item stat-blue" draggable="true" ondragstart="handleTotemDrag(event, 'blue')">+1</div>
-            <div class="totem-item stat-red" draggable="true" ondragstart="handleTotemDrag(event, 'red')">-1</div>
-            <div class="totem-item shield-token" draggable="true" ondragstart="handleTotemDrag(event, 'shield')">🛡️</div>
+    <div class="totem-box">
+        <div class="totem-group">
+            <strong>Tokens</strong>
+            <div class="totem-items">
+                <div class="totem-item stat-blue" draggable="true" ondragstart="handleTotemDrag(event, 'blue')">+1</div>
+                <div class="totem-item stat-red" draggable="true" ondragstart="handleTotemDrag(event, 'red')">-1</div>
+                <div class="totem-item shield-token" draggable="true" ondragstart="handleTotemDrag(event, 'shield')">🛡️</div>
+            </div>
         </div>
+        <p style="font-size: 10px; color: #888; margin-top: 5px;">Drag to attach on cards</p>
     </div>
-    <p style="font-size: 10px; color: #888; margin-top: 5px;">Drag to attach on cards</p>
-</div>
-
 
     <div class="main-container">
         <div class="board">
@@ -46,6 +45,7 @@
                 <div class="cost-container">COST: <input type="number" id="costVal" value="0" min="0" max="99" class="no-spinner"></div>
                 <div id="diceResult" class="dice-d10">?</div>
                 <button class="roll-btn" onclick="rollD10()">ROLL</button>
+                <button class="roll-btn" onclick="openDiceModal()" style="margin-left: 10px; background: #444; border-color: #888;">🎲 DICE</button>
             </div>
 
             <div class="zone hp-zone drop-zone" id="hpContent" data-limit="8"></div>
@@ -94,14 +94,24 @@
             <div onclick="toggleRotate()">สลับตั้ง/นอน</div>
             <div onclick="toggleLinkArea()">Link (วางใต้การ์ด)</div>
             <div onclick="returnToHand()">นำกลับขึ้นมือ</div>
+            <div onclick="viewFullImage()">ดูรูปการ์ดใหญ่</div>
         </div>
     </div>
 
     <div id="deckModal"><span class="close-modal" onclick="closeViewer()">&times;</span><div class="modal-content" id="modalGrid"></div></div>
 
+    <div id="diceModal" class="dice-modal-overlay">
+        <div class="dice-modal-content">
+            <span class="close-modal" onclick="closeDiceModal()">&times;</span>
+            <h2 style="color: #00d2ff; margin-bottom: 20px;">D10 DICE ROLL</h2>
+            <div id="bigDiceDisplay" class="dice-d10-big">?</div>
+            <button class="roll-btn-large" onclick="rollBigDice()">CLICK TO ROLL</button>
+        </div>
+    </div>
+
     <div id="fullImageOverlay" onclick="this.style.display='none'">
-    <img id="fullImageDisplay" src="" alt="Full Card">
-</div>
+        <img id="fullImageDisplay" src="" alt="Full Card">
+    </div>
 
     <script src="script.js"></script>
 </body>

@@ -46,6 +46,49 @@ function rollD10() {
     }, 50);
 }
 
+// ฟังก์ชันเปิด/ปิด หน้าต่างทอยลูกเต๋า
+function openDiceModal() {
+    const modal = document.getElementById('diceModal');
+    modal.style.display = 'flex';
+    document.getElementById('bigDiceDisplay').innerText = '?';
+}
+
+function closeDiceModal() {
+    document.getElementById('diceModal').style.display = 'none';
+}
+
+// ฟังก์ชันทอยลูกเต๋า D10 แบบสุ่มเลขในหน้าต่าง Modal
+function rollBigDice() {
+    const diceDisplay = document.getElementById('bigDiceDisplay');
+    let count = 0;
+    
+    let itv = setInterval(() => {
+        diceDisplay.innerText = Math.floor(Math.random() * 10);
+        diceDisplay.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+        
+        if(count++ > 20) {
+            clearInterval(itv);
+            const finalValue = Math.floor(Math.random() * 10);
+            diceDisplay.innerText = finalValue;
+            diceDisplay.style.transform = `rotate(0deg)`;
+            
+            // เอฟเฟกต์แสงวาบเมื่อได้ผลลัพธ์
+            diceDisplay.style.boxShadow = "0 0 40px #fff";
+            setTimeout(() => diceDisplay.style.boxShadow = "none", 400);
+        }
+    }, 50);
+}
+
+// ปิด Modal เมื่อคลิกที่พื้นหลัง
+window.addEventListener('mousedown', function(e) {
+    const diceModal = document.getElementById('diceModal');
+    if (e.target === diceModal) {
+        closeDiceModal();
+    }
+});
+
+
+
 // --- 2. ระบบ Drag & Drop ---
 function handleDragStart(e) { 
     dragSrcEl = this; 
